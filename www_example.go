@@ -154,14 +154,15 @@ var AcceptInterface map[string]string = map[string]string{
 // reflex_stomp.go
 func Whatamidoing(sourceStompMessage *Frame, unit *StompUnit) {
 
-	var subid string
-	unit.TopicSubidDictionaryMutex.Lock()
-	{
-		subid = unit.TopicSubidDictionary[SubscribeMap["Whatamidoing"]]
-	}
-	unit.TopicSubidDictionaryMutex.Unlock()
+	// subid can be "" ,when send() message it will add subid if exist
+	// var subid string
+	// unit.TopicSubidDictionaryMutex.Lock()
+	// {
+	// 	subid = unit.TopicSubidDictionary[SubscribeMap["Whatamidoing"]]
+	// }
+	// unit.TopicSubidDictionaryMutex.Unlock()
 
-	messageFrame, errtxt := NewMessageFrame(SubscribeMap["Whatamidoing"], StompServerInstance.IStompManager.NewMessageId(), subid)
+	messageFrame, errtxt := NewMessageFrame(SubscribeMap["Whatamidoing"], StompServerInstance.IStompManager.NewMessageId(), "") // subid
 	if errtxt != "" {
 		messageFrame = NewErrorFrame("AskWhatamidoing Error", errtxt, sourceStompMessage)
 	} else {

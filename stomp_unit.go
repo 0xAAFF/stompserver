@@ -120,15 +120,11 @@ func (stompUnit *StompUnit) onStompProtocol(stomp *Frame) {
 		}
 	case StompCommand.Subscribe:
 		{
-			stompUnit.TopicSubidDictionaryMutex.Lock()
-			{
-				errorFrame := stompUnit.PublishManager.SubScribe(stomp, stompUnit)
-				if errorFrame != nil {
-					stompUnit.SendStompMessage(errorFrame)
-				}
-				stompUnit.reflexHandle(stomp, stompUnit)
+			errorFrame := stompUnit.PublishManager.SubScribe(stomp, stompUnit)
+			if errorFrame != nil {
+				stompUnit.SendStompMessage(errorFrame)
 			}
-			stompUnit.TopicSubidDictionaryMutex.Unlock()
+			stompUnit.reflexHandle(stomp, stompUnit)
 			break
 		}
 	case StompCommand.Unsubscribe:
